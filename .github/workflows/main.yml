@@ -1,0 +1,24 @@
+name: Setup Cloudflared
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download cloudflared binary
+        run: |
+          echo "Downloading cloudflared..."
+          curl -L "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64" -o cf
+          chmod +x cf
+
+      - name: List project directory
+        run: ls -lh

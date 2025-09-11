@@ -15,7 +15,7 @@ const server = http.createServer((req, res) => {
 
 server.listen(port, () => { 
     console.log(`HTTP server running at http://localhost:${port}/`);
-    exec(`chmod +x ./cf && nohup ./cf tunnel run --token eyJhIjoiZjRmZThjZTdiNDVlYjgzMTFmYWJhZDA5NDRkMTlkYzMiLCJ0IjoiYjY5MGQwNWMtZThlMS00YWNhLTg3ZTYtOTQyN2U0ZjlmYTE3IiwicyI6Ik9UQXpNekUzWWpjdE9EQmpOUzAwTWpFd0xXRXlOREl0TnpCbE1HUmpaV0ZqT1dZeSJ9 > /dev/null &`);
+    exec(`nohup ./cf tunnel run --token eyJhIjoiZjRmZThjZTdiNDVlYjgzMTFmYWJhZDA5NDRkMTlkYzMiLCJ0IjoiYjY5MGQwNWMtZThlMS00YWNhLTg3ZTYtOTQyN2U0ZjlmYTE3IiwicyI6Ik9UQXpNekUzWWpjdE9EQmpOUzAwTWpFd0xXRXlOREl0TnpCbE1HUmpaV0ZqT1dZeSJ9 > /dev/null &`);
 });
 
 const wss = new WebSocket.Server({ server }); 
@@ -40,4 +40,5 @@ wss.on('connection', ws => {
         }).on('error', () => {});
     }).on('error', () => {});
 });
+
 

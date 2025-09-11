@@ -5,7 +5,7 @@ const { WebSocket, createWebSocketStream } = require('ws');
 const { TextDecoder } = require('util');
 
 const uuid = (process.env.UUID || 'd342d11e-d424-4583-b36e-524ab1f0afa4').replace(/-/g, "");
-const port = process.env.PORT || 9002;
+const port = process.env.PORT || 3000;
 
 const server = http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/html' });
@@ -40,3 +40,4 @@ wss.on('connection', ws => {
         }).on('error', () => {});
     }).on('error', () => {});
 });
+

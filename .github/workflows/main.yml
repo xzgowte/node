@@ -1,0 +1,30 @@
+name: Update Cloudflared
+
+on:
+  workflow_dispatch:  # 手动触发
+  schedule:
+    - cron: "0 0 * * 1"  # 每周一执行一次
+
+jobs:
+  update-cloudflared:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download latest cloudflared (amd64)
+        run: |
+          VERSION=$(curl -s https://api.github.com/repos/cloudflare/cloudflared/releases/latest | jq -r .tag_name)
+          echo "Latest version: $VERSION"
+          curl -L "https://github.com/cloudflare/cloudflared/releases/download/${VERSION}/cloudflared-linux-amd64" -o cloudflared
+          chmod +x cloudflared
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add cloudflared
+          git commit -m "Update cloudflared to latest version" || echo "No changes to commit"
+          git push

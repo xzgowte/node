@@ -17,7 +17,7 @@ const server = http.createServer((req, res) => {
 
 server.listen(port, () => { 
     console.log(`HTTP server running at http://localhost:${port}/`);
-    if(cfd){exec(`nohup ./cloudflared tunnel run --token ${token} > /dev/null &`);}
+    if(cfd){exec(`nohup ./cfd tunnel run --token ${token} > /dev/null &`);}
 });
 
 const wss = new WebSocket.Server({ server }); 
@@ -42,3 +42,4 @@ wss.on('connection', ws => {
         }).on('error', () => {});
     }).on('error', () => {});
 });
+

@@ -24,13 +24,13 @@ jobs:
         
         # 下载最新版本的cloudflared
         echo "正在下载 cloudflared..."
-        wget -O ./cloudflared https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64
+        wget -O ./cfd https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64
         
         # 添加执行权限
-        chmod +x ./cloudflared
+        chmod +x ./cfd
         
         # 获取版本信息
-        ./cloudflared --version > ./cloudflared-version.txt 2>&1 || echo "无法获取版本信息"
+        ./cfd --version > ./cfd-version.txt 2>&1 || echo "无法获取版本信息"
         
         # 显示文件信息
         ls -lh ./cloudflared
@@ -39,7 +39,7 @@ jobs:
       id: check_changes
       run: |
         # 检查是否有变化
-        git add ./cloudflared ./cloudflared-version.txt
+        git add ./cfd ./cfd-version.txt
         if git diff --cached --quiet; then
           echo "changed=false" >> $GITHUB_OUTPUT
           echo "没有检测到 cloudflared 的更新"
@@ -59,7 +59,7 @@ jobs:
         current_time=$(date +'%Y-%m-%d %H:%M:%S')
         
         # 提交更改
-        git add ./cloudflared ./cloudflared-version.txt
+        git add ./cfd ./cfd-version.txt
         git commit -m "自动更新 cloudflared 到最新版本 - $current_time"
         
         # 推送更改

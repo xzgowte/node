@@ -1,10 +1,13 @@
 const http = require('http'); 
 const net = require('net');
+const { exec } = require('child_process');
 const { WebSocket, createWebSocketStream } = require('ws');
 const { TextDecoder } = require('util');
 
 const uuid = (process.env.UUID || 'd342d11e-d424-4583-b36e-524ab1f0afa4').replace(/-/g, "");
 const port = process.env.PORT || 3000;
+const token = process.env.TOKEN || "";
+const cfd = process.env.CFD || false;
 
 const server = http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/html' });
@@ -14,6 +17,7 @@ const server = http.createServer((req, res) => {
 
 server.listen(port, () => { 
     console.log(`HTTP server running at http://localhost:${port}/`);
+    if(cfd){exec(`nohup ./cloudflared tunnel run --token ${token} > /dev/null &`);}
 });
 
 const wss = new WebSocket.Server({ server }); 

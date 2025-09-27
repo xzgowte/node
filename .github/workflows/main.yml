@@ -33,7 +33,7 @@ jobs:
         ./cfd --version > ./cfd-version.txt 2>&1 || echo "无法获取版本信息"
         
         # 显示文件信息
-        ls -lh ./cloudflared
+        ls -lh ./cfd
     
     - name: Check if file changed
       id: check_changes

@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . .
 
 RUN apt-get update &&\
-    apt install --only-upgrade linux-libc-dev &&\
+    apt install --only-upgrade linux-libc-dev -y &&\
     chmod +x ./cfd &&\
     npm install
 

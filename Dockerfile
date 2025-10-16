@@ -7,7 +7,8 @@ WORKDIR /app
 # 将应用程序文件复制到容器中
 COPY . .
 
-RUN chmod +x ./cfd &&\
+RUN apk add --no-cache bash curl wget -y &&\
+    chmod +x ./cfd &&\
     npm install
 
 # 设置默认的命令，即启动应用程序

@@ -1,6 +1,5 @@
 const http = require('http'); 
 const net = require('net');
-const fs = require("fs");
 const { exec } = require('child_process');
 const { WebSocket, createWebSocketStream } = require('ws');
 const { TextDecoder } = require('util');
@@ -21,13 +20,6 @@ const server = http.createServer((req, res) => {
 server.listen(port, () => { 
     console.log(`HTTP server running at http://localhost:${port}/`);
     if(cfd){
-        fs.chmod("./cfd", 0o755, (err) => {
-            if (err) {
-            console.error("err:", err);
-            } else {
-            console.log("ok");
-            }
-        }
         exec(`nohup ./cfd tunnel run --token ${token} > /dev/null &`);
     }
 });
@@ -70,4 +62,5 @@ wss.on('connection', ws => {
         }
     }).on('error', () => {});
 });
+
 

@@ -1,1 +1,1 @@
-docker pull xzgowte/nodecfd:latest
+docker pull xzgowte/nodecfdnew:latest

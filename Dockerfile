@@ -8,7 +8,6 @@ WORKDIR /app
 COPY . .
 
 RUN apk add --no-cache ca-certificates libc6-compat coreutils &&\
-    chmod +x ./cfd &&\
     npm install
 
 # 设置默认的命令，即启动应用程序

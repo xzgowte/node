@@ -10,7 +10,7 @@ jobs:
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        DOCKERHUB_REPOSITORY: ${{ secrets.DOCKER_USERNAME }}/nodecfd:latest
+        DOCKERHUB_REPOSITORY: ${{ secrets.DOCKER_USERNAME }}/nodecfdnew:latest
 
       steps:
       - name: Set up QEMU
@@ -30,4 +30,4 @@ jobs:
         with:
           push: true
           platforms: linux/amd64
-          tags: ${{ secrets.DOCKER_USERNAME }}/nodecfd
+          tags: ${{ secrets.DOCKER_USERNAME }}/nodecfdnew

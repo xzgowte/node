@@ -1,1 +1,0 @@
-cloudflared version 2025.10.0 (built 2025-10-14-19:01 UTC)

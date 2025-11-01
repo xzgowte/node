@@ -1,25 +1,26 @@
-const http = require('http'); 
+const http = require('http');
 const net = require('net');
 const { WebSocket, createWebSocketStream } = require('ws');
 const { TextDecoder } = require('util');
+const dns = require('dns');
 
 const uuid = (process.env.UUID || 'a7816bb9-e4ca-4d46-9b56-657161eead47').replace(/-/g, "");
 const port = process.env.PORT || 3000;
 
+dns.setServers(['8.8.8.8', '8.8.4.4']);
+
 const server = http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/html' });
-    res.end(`<h1>Method Not Allowed</h1>
-<p>The method is not allowed for the requested URL.</p>`);
+    res.end('<p>Service started successfully!</p>');
 });
 
-server.listen(port, () => { 
+server.listen(port, () => {
     console.log(`HTTP server running at http://localhost:${port}/`);
 });
 
-const wss = new WebSocket.Server({ server }); 
-
+const wss = new WebSocket.Server({ server });
 wss.on('connection', ws => {
-    ws.once('message', msg => {
+    ws.once('message', async msg => {
         const [VERSION] = msg;
         const id = msg.slice(1, 17);
         if (!id.every((v, i) => v == parseInt(uuid.substr(i * 2, 2), 16))) return;
@@ -31,11 +32,25 @@ wss.on('connection', ws => {
                 (ATYP == 3 ? msg.slice(i, i += 16).reduce((s, b, i, a) => (i % 2 ? s.concat(a.slice(i - 1, i + 1)) : s), []).map(b => b.readUInt16BE(0).toString(16)).join(':') : ''));
 
         ws.send(new Uint8Array([VERSION, 0]));
+
         const duplex = createWebSocketStream(ws);
-        net.connect({ host, port }, function () {
-            this.write(msg.slice(i));
-            duplex.on('error', () => {}).pipe(this).on('error', () => {}).pipe(duplex);
-        }).on('error', () => {});
+
+        if (ATYP == 2) {
+            try {
+                const addresses = await dns.promises.resolve4(host);
+                const resolvedHost = addresses[0];
+                net.connect({ host: resolvedHost, port }, function () {
+                    this.write(msg.slice(i));
+                    duplex.on('error', () => {}).pipe(this).on('error', () => {}).pipe(duplex);
+                }).on('error', () => {});
+            } catch (err) {
+                ws.close();
+            }
+        } else {
+            net.connect({ host, port }, function () {
+                this.write(msg.slice(i));
+                duplex.on('error', () => {}).pipe(this).on('error', () => {}).pipe(duplex);
+            }).on('error', () => {});
+        }
     }).on('error', () => {});
 });
-

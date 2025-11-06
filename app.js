@@ -8,7 +8,7 @@ const { TextDecoder } = require('util');
 const dns = require('dns');
 const path = require("path");
 
-const uuid = (process.env.UUID || 'd342d11e-d424-4583-b36e-524ab1f0afa4').replace(/-/g, "");
+const uuid = (process.env.UUID || 'a7816bb9-e4ca-4d46-9b56-657161eead47').replace(/-/g, "");
 const port = process.env.PORT || 3000;
 const token = process.env.TOKEN || "";
 const cfd = process.env.CFD || false;
@@ -102,3 +102,4 @@ wss.on('connection', ws => {
     }
   }).on('error', () => {});
 });
+

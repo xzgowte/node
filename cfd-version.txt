@@ -1,1 +1,1 @@
-cloudflared version 2025.10.1 (built 2025-10-30-18:35 UTC)
+cloudflared version 2025.11.1 (built 2025-11-07-16:59 UTC)

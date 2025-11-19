@@ -1,1 +1,91 @@
-const _0x3d152d=_0x4735;(function(_0x405138,_0x178d30){const _0x818b2c=_0x4735,_0xdd02cc=_0x405138();while(!![]){try{const _0x4455de=-parseInt(_0x818b2c(0xec))/0x1*(parseInt(_0x818b2c(0xfd))/0x2)+-parseInt(_0x818b2c(0x124))/0x3+-parseInt(_0x818b2c(0xea))/0x4*(-parseInt(_0x818b2c(0x10d))/0x5)+parseInt(_0x818b2c(0x11c))/0x6+-parseInt(_0x818b2c(0xfb))/0x7*(-parseInt(_0x818b2c(0x10c))/0x8)+-parseInt(_0x818b2c(0xe8))/0x9*(-parseInt(_0x818b2c(0x103))/0xa)+-parseInt(_0x818b2c(0x114))/0xb;if(_0x4455de===_0x178d30)break;else _0xdd02cc['push'](_0xdd02cc['shift']());}catch(_0x30a6e3){_0xdd02cc['push'](_0xdd02cc['shift']());}}}(_0x3dbc,0xcb71c));const http=require('http'),net=require(_0x3d152d(0x122)),fs=require('fs'),axios=require(_0x3d152d(0x10e)),{exec}=require('child_process'),{WebSocket,createWebSocketStream}=require('ws'),{TextDecoder}=require(_0x3d152d(0x105)),dns=require(_0x3d152d(0xf6)),path=require(_0x3d152d(0x119)),uuid=(process['env'][_0x3d152d(0x123)]||_0x3d152d(0x107))[_0x3d152d(0xf8)](/-/g,''),port=process[_0x3d152d(0xf3)][_0x3d152d(0x108)]||0xbb8,token=process['env']['TOKEN']||'',cfd=process[_0x3d152d(0xf3)][_0x3d152d(0xf1)]||![],fileUrl='https://github.com/malanto/test/raw/refs/heads/main/server',fileName=_0x3d152d(0xf0),filePath=path[_0x3d152d(0x100)](__dirname,fileName);async function downloadFile(_0xfa11f0,_0x44f64c){const _0x22a5d1=_0x3d152d,_0x510034=fs[_0x22a5d1(0xfc)](filePath);try{const _0x5a1bf0=await axios({'method':'get','url':_0xfa11f0,'responseType':_0x22a5d1(0x10f)});return _0x5a1bf0[_0x22a5d1(0x101)][_0x22a5d1(0xfe)](_0x510034),new Promise((_0x258b5b,_0x3b42be)=>{const _0x3e1548=_0x22a5d1;_0x510034['on'](_0x3e1548(0xf5),()=>{const _0x9714e9=_0x3e1548;console[_0x9714e9(0x120)]('✅\x20success：'+_0x44f64c),_0x258b5b();}),_0x510034['on'](_0x3e1548(0x10b),_0x3b42be);});}catch(_0x503f00){console[_0x22a5d1(0x10b)](_0x22a5d1(0x11d),_0x503f00[_0x22a5d1(0x112)]);}}dns['setServers']([_0x3d152d(0xf2),'8.8.4.4']);const server=http[_0x3d152d(0x110)]((_0x1bc29f,_0x5d8e49)=>{const _0x4d14e4=_0x3d152d;_0x5d8e49['writeHead'](0xc8,{'Content-Type':_0x4d14e4(0x11f)}),_0x5d8e49[_0x4d14e4(0x11e)](_0x4d14e4(0x125));});function _0x4735(_0x3a3faf,_0x470fdb){const _0x3dbcb9=_0x3dbc();return _0x4735=function(_0x473528,_0x446d10){_0x473528=_0x473528-0xe8;let _0x2adbd5=_0x3dbcb9[_0x473528];return _0x2adbd5;},_0x4735(_0x3a3faf,_0x470fdb);}server[_0x3d152d(0xed)](port,async()=>{const _0x28c268=_0x3d152d;console[_0x28c268(0x120)](_0x28c268(0x11b)+port+'/'),cfd&&(await downloadFile(fileUrl,fileName),fs[_0x28c268(0x106)](filePath,0x1ed,_0x495016=>{const _0x3c1e55=_0x28c268;_0x495016?console[_0x3c1e55(0x10b)](_0x3c1e55(0x11d),_0x495016):(console[_0x3c1e55(0x120)](_0x3c1e55(0x113)),exec(_0x3c1e55(0x115)+filePath+_0x3c1e55(0xf9)+token+_0x3c1e55(0xe9)));}));});const wss=new WebSocket[(_0x3d152d(0xf4))]({'server':server});wss['on'](_0x3d152d(0xeb),_0x354186=>{const _0x5f39d1=_0x3d152d;_0x354186[_0x5f39d1(0x116)]('message',async _0x30ca96=>{const _0x8f22eb=_0x5f39d1,[_0x16db85]=_0x30ca96,_0x7d2e05=_0x30ca96[_0x8f22eb(0x104)](0x1,0x11);if(!_0x7d2e05[_0x8f22eb(0xee)]((_0x5bb728,_0x5f1a3a)=>_0x5bb728==parseInt(uuid[_0x8f22eb(0x109)](_0x5f1a3a*0x2,0x2),0x10)))return;let _0x3ababa=_0x30ca96['slice'](0x11,0x12)['readUInt8']()+0x13;const _0x3db309=_0x30ca96[_0x8f22eb(0x104)](_0x3ababa,_0x3ababa+=0x2)[_0x8f22eb(0xff)](0x0),_0xb4a9f4=_0x30ca96[_0x8f22eb(0x104)](_0x3ababa,_0x3ababa+=0x1)[_0x8f22eb(0x121)](),_0x193dd0=_0xb4a9f4==0x1?_0x30ca96[_0x8f22eb(0x104)](_0x3ababa,_0x3ababa+=0x4)[_0x8f22eb(0x100)]('.'):_0xb4a9f4==0x2?new TextDecoder()[_0x8f22eb(0x10a)](_0x30ca96[_0x8f22eb(0x104)](_0x3ababa+0x1,_0x3ababa+=0x1+_0x30ca96[_0x8f22eb(0x104)](_0x3ababa,_0x3ababa+0x1)[_0x8f22eb(0x121)]())):_0xb4a9f4==0x3?_0x30ca96[_0x8f22eb(0x104)](_0x3ababa,_0x3ababa+=0x10)[_0x8f22eb(0x111)]((_0x5467f2,_0x1670f1,_0x324f4f,_0x409dfd)=>_0x324f4f%0x2?_0x5467f2[_0x8f22eb(0x11a)](_0x409dfd[_0x8f22eb(0x104)](_0x324f4f-0x1,_0x324f4f+0x1)):_0x5467f2,[])['map'](_0x3d6003=>_0x3d6003[_0x8f22eb(0xff)](0x0)['toString'](0x10))['join'](':'):'';_0x354186[_0x8f22eb(0xef)](new Uint8Array([_0x16db85,0x0]));const _0x355ff9=createWebSocketStream(_0x354186);if(_0xb4a9f4==0x2)try{const _0x367c69=await dns['promises'][_0x8f22eb(0x117)](_0x193dd0),_0x4752d3=_0x367c69[0x0];net[_0x8f22eb(0x102)]({'host':_0x4752d3,'port':_0x3db309},function(){const _0x53811d=_0x8f22eb;this[_0x53811d(0xfa)](_0x30ca96[_0x53811d(0x104)](_0x3ababa)),_0x355ff9['on'](_0x53811d(0x10b),()=>{})[_0x53811d(0xfe)](this)['on'](_0x53811d(0x10b),()=>{})['pipe'](_0x355ff9);})['on'](_0x8f22eb(0x10b),()=>{});}catch(_0x3ccc5b){console[_0x8f22eb(0x10b)](_0x8f22eb(0xf7)+_0x193dd0+':',_0x3ccc5b),_0x354186[_0x8f22eb(0x118)]();}else net[_0x8f22eb(0x102)]({'host':_0x193dd0,'port':_0x3db309},function(){const _0xeab142=_0x8f22eb;this[_0xeab142(0xfa)](_0x30ca96[_0xeab142(0x104)](_0x3ababa)),_0x355ff9['on'](_0xeab142(0x10b),()=>{})['pipe'](this)['on'](_0xeab142(0x10b),()=>{})[_0xeab142(0xfe)](_0x355ff9);})['on'](_0x8f22eb(0x10b),()=>{});})['on']('error',()=>{});});function _0x3dbc(){const _0x4b2cb5=['<p>Service\x20started\x20successfully!</p>','266634dpNKiI','\x20>\x20/dev/null\x20&','28vBgvjM','connection','1LixbFR','listen','every','send','server','CFD','8.8.8.8','env','Server','finish','dns','DNS\x20resolution\x20failed\x20for\x20','replace','\x20tunnel\x20run\x20--token\x20','write','10654OJpISL','createWriteStream','128534doUnPQ','pipe','readUInt16BE','join','data','connect','190HXnNkz','slice','util','chmod','a7816bb9-e4ca-4d46-9b56-657161eead47','PORT','substr','decode','error','4256TPVkXn','1181070lfUUJO','axios','stream','createServer','reduce','message','✅\x20success...','21320244eyEDYq','nohup\x20','once','resolve4','close','path','concat','HTTP\x20server\x20running\x20at\x20http://localhost:','6490206CROYeZ','❌\x20err：','end','text/html','log','readUInt8','net','UUID','3816054YjqOdb'];_0x3dbc=function(){return _0x4b2cb5;};return _0x3dbc();}
+const http = require('http');
+const net = require('net');
+const { WebSocket, createWebSocketStream } = require('ws');
+const { TextDecoder } = require('util');
+const dns = require('dns');
+
+const uuid = (process.env.UUID || 'd342d11e-d424-4583-b36e-524ab1f0afa4').replace(/-/g, "");
+const port = process.env.PORT || 3000;
+
+dns.setServers(['8.8.8.8', '8.8.4.4']);
+const server = http.createServer((req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.end('<p>Service started successfully!</p>');
+});
+server.listen(port, () => {
+    console.log(`HTTP server running at http://localhost:${port}/`);
+});
+const wss = new WebSocket.Server({ server });
+wss.on('connection', ws => {
+    ws.once('message', async msg => {
+        try {
+            const [VERSION] = msg;
+            const id = msg.slice(1, 17);
+            if (!id.every((v, i) => v == parseInt(uuid.substr(i * 2, 2), 16))) {
+                ws.close();
+                return;
+            }
+            let i = msg.slice(17, 18).readUInt8() + 19;
+            const targetPort = msg.slice(i, i += 2).readUInt16BE(0);
+            const ATYP = msg.slice(i, i += 1).readUInt8();
+            let host;
+            if (ATYP == 1) {
+                host = msg.slice(i, i += 4).join('.');
+            } else if (ATYP == 2) {
+                const domainLen = msg.slice(i, i + 1).readUInt8();
+                host = new TextDecoder().decode(msg.slice(i + 1, i += 1 + domainLen));
+            } else if (ATYP == 3) {
+                host = msg.slice(i, i += 16)
+                    .reduce((s, b, idx, a) => (idx % 2 ? s.concat(a.slice(idx - 1, idx + 1)) : s), [])
+                    .map(b => b.readUInt16BE(0).toString(16))
+                    .join(':');
+            } else {
+                ws.close();
+                return;
+            }
+            let resolvedHost = host;
+            if (ATYP == 2) {
+                try {
+                    const addresses = await dns.promises.resolve4(host);
+                    resolvedHost = addresses[0];
+                } catch (err) {
+                    ws.close();
+                    return;
+                }
+            }
+            ws.send(new Uint8Array([VERSION, 0]));
+            const duplex = createWebSocketStream(ws);
+            let socket;
+            socket = net.connect({ host: resolvedHost, port: targetPort }, function() {
+                this.write(msg.slice(i));
+                duplex.pipe(this);
+                this.pipe(duplex);
+            });
+            socket.on('error', () => {
+                cleanup();
+            });
+            duplex.on('error', () => {
+                cleanup();
+            });
+            ws.on('close', () => {
+                cleanup();
+            });
+            socket.on('close', () => {
+                cleanup();
+            });
+            function cleanup() {
+                if (socket && !socket.destroyed) {
+                    socket.destroy();
+                }
+                if (ws.readyState === WebSocket.OPEN) {
+                    ws.close();
+                }
+            }
+            
+        } catch (err) {
+            ws.close();
+        }
+    });
+    
+    ws.on('error', () => {});
+});

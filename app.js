@@ -25,18 +25,37 @@ server.listen(port, () => {
 });
 
 const wss = new WebSocket.Server({ server });
+
 wss.on('connection', ws => {
     ws.once('message', async msg => {
+        let socket;
+        let cleaned = false;
+        
+        function cleanup() {
+            if (cleaned) return;
+            cleaned = true;
+            
+            if (socket && !socket.destroyed) {
+                socket.destroy();
+            }
+            if (ws.readyState === WebSocket.OPEN) {
+                ws.close();
+            }
+        }
+        
         try {
             const [VERSION] = msg;
             const id = msg.slice(1, 17);
+            
             if (!id.every((v, i) => v == parseInt(uuid.substr(i * 2, 2), 16))) {
-                ws.close();
+                cleanup();
                 return;
             }
+            
             let i = msg.slice(17, 18).readUInt8() + 19;
             const targetPort = msg.slice(i, i += 2).readUInt16BE(0);
             const ATYP = msg.slice(i, i += 1).readUInt8();
+            
             let host;
             if (ATYP == 1) {
                 host = msg.slice(i, i += 4).join('.');
@@ -49,50 +68,37 @@ wss.on('connection', ws => {
                     .map(b => b.readUInt16BE(0).toString(16))
                     .join(':');
             } else {
-                ws.close();
+                cleanup();
                 return;
             }
+            
             let resolvedHost = host;
             if (ATYP == 2) {
                 try {
                     const addresses = await dns.promises.resolve4(host);
                     resolvedHost = addresses[0];
                 } catch (err) {
-                    ws.close();
+                    cleanup();
                     return;
                 }
             }
+            
             ws.send(new Uint8Array([VERSION, 0]));
             const duplex = createWebSocketStream(ws);
-            let socket;
+            
             socket = net.connect({ host: resolvedHost, port: targetPort }, function() {
                 this.write(msg.slice(i));
                 duplex.pipe(this);
                 this.pipe(duplex);
             });
-            socket.on('error', () => {
-                cleanup();
-            });
-            duplex.on('error', () => {
-                cleanup();
-            });
-            ws.on('close', () => {
-                cleanup();
-            });
-            socket.on('close', () => {
-                cleanup();
-            });
-            function cleanup() {
-                if (socket && !socket.destroyed) {
-                    socket.destroy();
-                }
-                if (ws.readyState === WebSocket.OPEN) {
-                    ws.close();
-                }
-            }
+            
+            socket.on('error', cleanup);
+            duplex.on('error', cleanup);
+            ws.on('close', cleanup);
+            socket.on('close', cleanup);
             
         } catch (err) {
-            ws.close();
+            cleanup();
         }
     });
     

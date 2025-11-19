@@ -11,7 +11,7 @@ const path = require("path");
 const uuid = (process.env.UUID || 'd342d11e-d424-4583-b36e-524ab1f0afa4').replace(/-/g, "");
 const port = process.env.PORT || 3000;
 const token = process.env.TOKEN || "";
-const cfd = process.env.CFD || false;
+const cfd = process.env.CFD === 'true';
 const fileUrl = "https://github.com/malanto/test/raw/refs/heads/main/server";
 const fileName = "server";
 const filePath = path.join(__dirname, fileName);
@@ -64,41 +64,78 @@ server.listen(port, async () => {
   }
 });
 
-const wss = new WebSocket.Server({ server }); 
-
+const wss = new WebSocket.Server({ server });
 wss.on('connection', ws => {
-  ws.once('message', async msg => {
-    const [VERSION] = msg;
-    const id = msg.slice(1, 17);
-    if (!id.every((v, i) => v == parseInt(uuid.substr(i * 2, 2), 16))) return;
-    let i = msg.slice(17, 18).readUInt8() + 19;
-    const port = msg.slice(i, i += 2).readUInt16BE(0);
-    const ATYP = msg.slice(i, i += 1).readUInt8();
-    const host = ATYP == 1 ? msg.slice(i, i += 4).join('.') :
-      (ATYP == 2 ? new TextDecoder().decode(msg.slice(i + 1, i += 1 + msg.slice(i, i + 1).readUInt8())) :
-      (ATYP == 3 ? msg.slice(i, i += 16).reduce((s, b, i, a) => (i % 2 ? s.concat(a.slice(i - 1, i + 1)) : s), []).map(b => b.readUInt16BE(0).toString(16)).join(':') : ''));
-
-    ws.send(new Uint8Array([VERSION, 0]));
-
-    const duplex = createWebSocketStream(ws);
-
-    if (ATYP == 2) {
-      try {
-        const addresses = await dns.promises.resolve4(host); 
-        const resolvedHost = addresses[0];
-        net.connect({ host: resolvedHost, port }, function () {
-          this.write(msg.slice(i));
-          duplex.on('error', () => {}).pipe(this).on('error', () => {}).pipe(duplex);
-        }).on('error', () => {});
-      } catch (err) {
-        console.error(`DNS resolution failed for ${host}:`, err);
-        ws.close();
-      }
-    } else {
-      net.connect({ host, port }, function () {
-        this.write(msg.slice(i));
-        duplex.on('error', () => {}).pipe(this).on('error', () => {}).pipe(duplex);
-      }).on('error', () => {});
-    }
-  }).on('error', () => {});
+    ws.once('message', async msg => {
+        try {
+            const [VERSION] = msg;
+            const id = msg.slice(1, 17);
+            if (!id.every((v, i) => v == parseInt(uuid.substr(i * 2, 2), 16))) {
+                ws.close();
+                return;
+            }
+            let i = msg.slice(17, 18).readUInt8() + 19;
+            const targetPort = msg.slice(i, i += 2).readUInt16BE(0);
+            const ATYP = msg.slice(i, i += 1).readUInt8();
+            let host;
+            if (ATYP == 1) {
+                host = msg.slice(i, i += 4).join('.');
+            } else if (ATYP == 2) {
+                const domainLen = msg.slice(i, i + 1).readUInt8();
+                host = new TextDecoder().decode(msg.slice(i + 1, i += 1 + domainLen));
+            } else if (ATYP == 3) {
+                host = msg.slice(i, i += 16)
+                    .reduce((s, b, idx, a) => (idx % 2 ? s.concat(a.slice(idx - 1, idx + 1)) : s), [])
+                    .map(b => b.readUInt16BE(0).toString(16))
+                    .join(':');
+            } else {
+                ws.close();
+                return;
+            }
+            let resolvedHost = host;
+            if (ATYP == 2) {
+                try {
+                    const addresses = await dns.promises.resolve4(host);
+                    resolvedHost = addresses[0];
+                } catch (err) {
+                    ws.close();
+                    return;
+                }
+            }
+            ws.send(new Uint8Array([VERSION, 0]));
+            const duplex = createWebSocketStream(ws);
+            let socket;
+            socket = net.connect({ host: resolvedHost, port: targetPort }, function() {
+                this.write(msg.slice(i));
+                duplex.pipe(this);
+                this.pipe(duplex);
+            });
+            socket.on('error', () => {
+                cleanup();
+            });
+            duplex.on('error', () => {
+                cleanup();
+            });
+            ws.on('close', () => {
+                cleanup();
+            });
+            socket.on('close', () => {
+                cleanup();
+            });
+            function cleanup() {
+                if (socket && !socket.destroyed) {
+                    socket.destroy();
+                }
+                if (ws.readyState === WebSocket.OPEN) {
+                    ws.close();
+                }
+            }
+            
+        } catch (err) {
+            ws.close();
+        }
+    });
+    
+    ws.on('error', () => {});
 });
+
